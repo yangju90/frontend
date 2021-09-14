@@ -8,7 +8,24 @@
     <script src="https://unpkg.com/vue@2.6.0"></script>
 </head>
 <body>
-    <div id="counter">{{msg}}</div>
+    <div id="counter">{{msg}}
+        <!-- v-once 只允许改变一次值 -->
+        <span v-once>{{spanValue}}</span>
+        <!-- v-html 输出html而不是文本 -->
+        <p v-html="rawHtml">aaaaaaa</p>
+
+        <!-- v-bind 绑定属性 -->
+        <div v-bind:class="color">
+            <span>{{value}}</span>
+        </div>
+        <!--
+            布尔类型，只要存在即为true, 当为null、undefinded、false时 为false， disabled不渲染包含
+        -->
+        <button v-bind:disabled="isButtonDisabled">Button</button>
+
+    </div>
+
+
 </body>
 </html>
 
@@ -16,7 +33,11 @@
     var vm = new Vue({
         el: '#counter',
         data: {
-            msg: "hello world, Vue"
+            msg: "hello world, Vue",
+            spanValue: "don't changed!",
+            rawHtml: '<span style="color: red">This is should be red.</span>',
+            color: 'blue',
+            value: 'v-bind process data.'
         },
         
         // 在实例初始化之后，数据观测（data observer）和 event/watcher 事件配置之前被调用， 简单来说页面创建之前调用
@@ -53,7 +74,13 @@
     });
 
     setTimeout(function(){
-        vm.msg = "change......!"
+        vm.msg = "change......!",
+        vm.spanValue = "changed!"
     }, 3000);
 
 </script>
+
+<style type="text/css">
+.red{color:red;}
+.blue{color:blue;}
+</style>
