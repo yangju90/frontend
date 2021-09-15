@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Vue 教程1~5节</title>
     <script src="https://unpkg.com/vue@2.6.0"></script>
 </head>
 <body>
@@ -18,11 +18,20 @@
         <div v-bind:class="color">
             <span>{{value}}</span>
         </div>
+
+        <div v-bind:id="dynamicId">dynamicId</div>
+
         <!--
             布尔类型，只要存在即为true, 当为null、undefinded、false时 为false， disabled不渲染包含
         -->
         <button v-bind:disabled="isButtonDisabled">Button</button>
 
+        <!-- javaScript 表达式 -->
+        <div>{{ number + 1 }}</div>
+        <!-- 三元运算 -->
+        <div>{{ ok ? 'YES' : 'NO' }}</div>
+        <!-- javaScript函数 -->
+        <div>{{ msg.split('').reverse().join('') }}</div>
     </div>
 
 
@@ -37,7 +46,10 @@
             spanValue: "don't changed!",
             rawHtml: '<span style="color: red">This is should be red.</span>',
             color: 'blue',
-            value: 'v-bind process data.'
+            value: 'v-bind process data.',
+            dynamicId: 'counterDiv',
+            number: 20,
+            ok: true
         },
         
         // 在实例初始化之后，数据观测（data observer）和 event/watcher 事件配置之前被调用， 简单来说页面创建之前调用
@@ -83,4 +95,8 @@
 <style type="text/css">
 .red{color:red;}
 .blue{color:blue;}
+
+#counterDiv{
+    color:blueviolet
+}
 </style>
