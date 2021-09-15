@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 计算属性及侦听器</title>
+    <script src="https://unpkg.com/vue@2.6.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+</head>
+
+<body>
+    <div id="computed">
+        <div @click="reverse()">{{ reverseMessage }}</div>
+        <div>{{ nowTime }}</div>
+        <div @click="rename('zhang san')">{{ fullName }}</div>
+    </div>
+    <div id="watchers">
+        <p>
+            Ask a yes/no question:
+            <input v-model="question">
+        </p>
+        <p>{{ answer }}</p>
+    </div>
+</body>
+
+</html>
+
+<script>
+    var v = new Vue({
+        el: "#computed",
+        data: {
+            message: "computedAndWatchers",
+            firstName: 'Foo',
+            lastName: 'Bar'
+        },
+        // computed 值计算类似于 Model中的变量
+        computed: {
+            property() {
+                return this.property;
+            },
+            reverseMessage() {
+                return this.message.split('').reverse().join('');
+            },
+
+            nowTime() {
+                return Date.now();
+            },
+
+            // computed 中定义set方法，默认没有set方法，set方法可以被 this.fullName=xxxx 调用, get计算 又被this.firstName 和this.lastName 使用
+            fullName: {
+                get() {
+                    return this.firstName + " " + this.lastName;
+                },
+
+                set(newValue) {
+                    var names = newValue.split(' ');
+                    this.firstName = names[0];
+                    this.lastName = names[names.length - 1];
+                }
+            },
+        },
+
+        methods: {
+            reverse() {
+                console.log("reverse")
+                this.message = this.message.split('').reverse().join('');
+            },
+
+            rename(fullName) {
+                this.fullName = fullName;
+                console.log(this.firstName + " && " + this.lastName);
+            },
+        },
+    });
+
+    // watch 常用在远程异步调用返回，监控
+    var w = new Vue({
+        el: '#watchers',
+        data: {
+            question: '',
+            answer: 'I cannot give you an answer until you ask a question!'
+        },
+        watch: {
+            // 如果 `question` 发生改变，这个函数就会运行
+            question: function (newQuestion, oldQuestion) {
+                this.answer = 'Waiting for you to stop typing...'
+                this.debouncedGetAnswer()
+            }
+        },
+        created: function () {
+            // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+            // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+            // AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+            // `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+            // 请参考：https://lodash.com/docs#debounce
+            this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+        },
+        methods: {
+            getAnswer: function () {
+                if (this.question.indexOf('?') === -1) {
+                    this.answer = 'Questions usually contain a question mark. ;-)'
+                    return
+                }
+                this.answer = 'Thinking...'
+                var vm = this
+                axios.get('https://yesno.wtf/api')
+                    .then(function (response) {
+                        vm.answer = _.capitalize(response.data.answer)
+                    })
+                    .catch(function (error) {
+                        vm.answer = 'Error! Could not reach the API. ' + error
+                    })
+            }
+        }
+    })
+</script>
