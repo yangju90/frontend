@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 模版语法-指令及缩写</title>
+    <script src="https://unpkg.com/vue@2.6.0"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- v- 是带有特殊特性，指令特征的值预期是单个JavaScript表达式，v-for是例外情况 -->
+        <p v-if="seen">seen变量控制显示</p>
+
+        <!-- 一些指令能够接受参数，指令名称之后以冒号表示，例如 v-bind 指令可以用响应式的更新Html特性 -->
+        <a v-bind:href="url">href</a>
+        <!-- v-on 它用于监听DOM事件 -->
+        <a v-on:click="doSomething('staticOnClick')"> ..... </a>
+        <!-- 动态参数绑定表达 -->
+        <div></div>
+        <a v-bind:[attribute]="url"> attribute </a>
+
+        <a v-on:[event]="eventClick"> event... </a>
+
+
+        <!-- 缩写 -->
+        <div></div>
+        <a :[attribute]="url"> 缩写 v-bind attribute ... </a>
+        <a @[event]="eventClick()"> 缩写 v-on event... </a>
+
+        <!-- 修饰符 --> 
+        <!--https://blog.csdn.net/wqliuj/article/details/108654103 修饰符详解 -->
+        <div @click = "click1()">
+            <!-- click stop 阻止事件传播 click2 事件触发后 click1触发-->
+            <div @click.stop = "click2()">
+                click!!!
+            </div>
+        </div>
+
+    </div>
+    
+</body>
+</html>
+
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            seen: true,
+            url: "http://www.hao123.com",
+            attribute: "href",
+            event: "click"
+        },
+        methods: {
+            doSomething(t) {
+                alert(t);
+            },
+            eventClick(){
+                console.log("点击不同的按钮，会检测不同事件", this.event);
+            },
+
+            click1(){
+                console.log("click1.........");
+            },
+
+            click2(){
+                console.log("click2.........");
+            },
+        }
+
+    });
+</script>
