@@ -10,8 +10,8 @@
     <script src="https://img.huiyiguanjia.com/CDNFile/layer/layer-v3.1.1/layer/layer.js"></script>
 </head>
 
-<body onload="lala()">
-    <form id="payment" action="http://localhost:8080/agreement/send" method="get">
+<body>
+    <form id="payment" action="http://localhost:8080/agreement/send" method="get" >
         <fieldset>
             <legend>用户资料</legend>
             <ol>
@@ -80,36 +80,14 @@
                 var dataResult = data
                 var strs = dataResult.split(".");
                 if(strs[strs.length - 1] === 'pdf'){
-                    $("#agreementFileName").append("<li><input checked='true' id='"+ strs[0] + "' name='pdfName' type='radio' value='"+ dataResult + "'><label for='" + strs[0] + "'>" + dataResult + "</label></li>");
+                    $("#agreementFileName").append("<li><input checked='true' id='"+ strs[0] + "' name='pdfName' type='radio' value='"+ dataResult +
+                         "'><label for='" + strs[0] + "'><a href='http://localhost:8080/pdf/download/" + dataResult + "' target='_blank'>" + dataResult + "</a></label></li>");
                 }
             }
         });
     })
 
-    function lala() {
-        $.ajax({
-            type: "get",
-            url: "http://localhost:8080/pdf",
-            dataType: "json",
-            error: function (data) {
-                alert("连接超时");
-            },
-            success: function (data) {
-                console.log(data)
-                var dataResult = data
-                for (var i = 0; i < dataResult.length; i++) {
-                    if(i == 0) {
-                        $("#agreementFileName").append("<li><input checked='true' id='a"+ i + "' name='pdfName' type='radio' value='"+ dataResult[i] + "'><label for='a" + i + "'>" + dataResult[i] + "</label></li>")
-                    }else{
-                        $("#agreementFileName").append("<li><input id='a"+ i + "' name='pdfName' type='radio' value='"+ dataResult[i] + "'><label for='a" + i + "'>" + dataResult[i] + "</label></li>")
 
-                    }
-                };
-
-            }
-
-        });
-    }
 </script>
 
 <style type="text/css">
