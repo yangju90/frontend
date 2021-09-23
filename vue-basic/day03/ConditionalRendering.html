@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@2.6.0"></script>
+    <title>条件渲染&列表渲染</title>
+</head>
+
+<body>
+    <div id="v-if-else-if">
+        <div v-if="type === 'A'">
+            A
+        </div>
+        <div v-else-if="type === 'B'">
+            B
+        </div>
+        <div v-else-if="type === 'C'">
+            C
+        </div>
+        <div v-else>
+            Not A/B/C
+        </div>
+
+        <div v-if="loginType === 'username'">
+            <label>Username</label>
+            <input placeholder="Enter your username">
+          </div>
+        <div v-else>
+            <label>Email</label>
+            <input placeholder="Enter your email address">
+        </div>
+
+        <div v-show="show">显示隐藏，不是重新渲染</div>
+
+        <div @click="changeLoginType()">changeLoginType</div>
+
+        <br/>
+
+        <ul>
+            <!-- :key vue绑定唯一key进行DOM跟踪渲染 -->
+            <li v-for="(value,index) in items" :key="index">
+                {{index}}: {{value}}
+            </li>
+        </ul>
+
+        <ul>
+            <li v-for="(value, name ,index) in Objects" :key="name">
+                {{index}} -> {{name}} : {{value}}
+            </li>
+        </ul>
+
+
+        
+        <ul>
+            <li v-for="(value,index) in eventNumbers" :key="index">
+                {{index}} -> {{value}}
+            </li>
+        </ul>
+
+
+        <ul>
+            <li v-for="(value,index) in methodNumbers(numbers)" :key="index">
+                {{index}} -> {{value}}
+            </li>
+        </ul>
+    </div>
+
+
+
+</body>
+
+</html>
+<script>
+    var v = new Vue({
+        el: "#v-if-else-if",
+        data: {
+            type: "A",
+            loginType: "username",
+            show: true,
+            items: [
+                "item1","item2"
+            ],
+
+            Objects: {
+                "name": "mat",
+                "age": 28,
+                "height": "180cm"
+            },
+
+            numbers: [1, 2,3,4,5,6,7, 8]
+        },
+
+        computed:{
+            eventNumbers(){
+                return this.numbers.filter(x => x %2 ==0);
+            }
+        },
+        methods: {
+            changeLoginType(){
+               this.loginType = this.loginType === "username"? "aaa" : "username";
+               this.show = !this.show;
+               this.Objects.sex= "M";
+               this.items.push("itemsOther")
+            },
+            methodNumbers(a){
+                return a.filter(x => x %2 ==0);
+            }
+        },
+    })
+
+</script>
