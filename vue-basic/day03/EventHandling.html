@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@2.6.0"></script>
+    <title>事件绑定</title>
+</head>
+<body>
+    <div id="app">
+        <!-- @ 可以绑定标签的所有的事件-->
+        <button @click= "counterFun()">数值： {{ counter }}</button>
+
+        <!--传入原生DOM事件，使用$event-->
+        <button @click= "great($event)">获取基础Event</button>
+
+
+        <button v-on:click.ctrl="onClick">Ctrl + click
+        </button>
+        
+    </div>
+</body>
+</html>
+
+<script>
+    var v = new Vue({
+        el: "#app",
+        data: {
+            counter: 0
+        },
+        methods: {
+            counterFun() {
+                console.log(this.counter);
+                this.counter = this.counter +  1;
+            },
+
+            great(event){
+                console.log(event);
+                // `event` 是原生 DOM 事件
+                if (event) {
+                    alert(event.target.tagName)
+                }
+            },
+            onClick(){
+                console.log("aaaaaaaaa");
+                alert("success!");
+            }
+        },
+    })
+</script>
