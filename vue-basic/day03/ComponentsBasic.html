@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@2.6.0"></script>
+    <title>组件基础</title>
+</head>
+
+<body>
+    <div id="app">
+        <button-counter title="传递1"></button-counter>
+        <button-counter title="传递2"></button-counter>
+
+        <div></div>
+        <blog-post v-for="item in blogPosts" :title="item.title" :key="item.key" :id="item.key"></blog-post>
+
+        <div></div>
+        <div :style="{ fontSize: postFontSize + 'em'}">
+            <event-subcomponent-demo v-for="item in blogPosts" :key="item.key" :post="item" @cfszie="changeNow">
+                <div><p></p>插入的HTML信息</div>
+            </event-subcomponent-demo>
+        </div>
+
+        <input value="obtainSuccuess!" @click="obtainEvent($event)">chulix</input>
+    </div>
+</body>
+
+</html>
+
+<script>
+    // props 向子组件传递数据 
+    Vue.component('button-counter', {
+        props: ["title"],
+        data() {
+            return {
+                count: 0
+            }
+        },
+        template: '<button @click="count++">{{title}}you clicked {{count}} times</button>',
+    });
+
+    // props 向子组件传递数据 
+    Vue.component('blog-post', {
+        props: ["title", "id"],
+        data() {
+            return {
+                count: 0
+            }
+        },
+        template: '<h3>{{id}} : {{title}}</h3>',
+    });
+
+    // 子组件监听
+    // slot 可以向组件中插入Html
+    Vue.component('event-subcomponent-demo',{
+        props: ["post"],
+        template: '<div class="blog-post">' +
+                '<h3>{{post.title}}</h3>' +
+                '<button @click="clickfun">Enlarge text</button>' +
+                '<slot></slot>' + 
+                '</div>',
+
+        methods:{
+            clickfun(){
+                this.$emit("cfszie", 1, 2);
+            }
+        }
+        
+    });
+
+
+    // slot 插槽
+
+
+    var v = new Vue({
+        el: "#app",
+        data(){
+            return {
+                blogPosts: [
+                    { key: 1, title: 'My journey with Vue' },
+                    { key: 2, title: 'Blogging with Vue' },
+                    { key: 3, title: 'Why Vue is so fun' }
+                ],
+                postFontSize: 1
+            }
+        },
+        methods: {
+            changeNow(a, b) {
+                console.log(a);
+                console.log(b);
+                this.postFontSize += 0.1;
+            },
+
+            obtainEvent(e){
+                console.log(e.target.value);
+            }
+        },
+    });
+</script>
