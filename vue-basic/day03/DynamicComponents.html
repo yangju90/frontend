@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Components Example</title>
+    <script src="https://unpkg.com/vue@2.6.0"></script>
+</head>
+<body>
+    <div id="dynamic-component-demo" class="demo">
+        <button v-for="tab in tabs" :key="tab.name" :class="['tab-button', {active: tab.name === currentTab.name}]" @click="currentTab = tab">
+            {{tab.name}}
+        </button>
+        <component :is="currentTab.component" class="tab"></component>
+    </div>
+</body>
+</html>
+
+<script>
+    var tabs = [
+        {
+            name: "Home",
+            component:{
+                template: '<div>Home Component</div>',
+            }
+        },
+        {
+            name: "Posts",
+            component:{
+                template: '<div>Posts Component</div>',
+            }
+        },
+        {
+            name: "Archive",
+            component:{
+                template: '<div>Archive Component</div>',
+            }
+        }
+    ];
+
+    var v = new Vue({
+        el: "#dynamic-component-demo",
+        data: {
+            tabs: tabs,
+            currentTab: tabs[0]
+        }
+    });
+
+</script>
+
+<style>
+      .tab-button {
+        padding: 6px 10px;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        background: #f0f0f0;
+        margin-bottom: -1px;
+        margin-right: -1px;
+      }
+      .tab-button:hover {
+        background: #e0e0e0;
+      }
+      .tab-button.active {
+        background: #e0e0e0;
+      }
+      .tab {
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+</style>
