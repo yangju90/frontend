@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单输入绑定</title>
+    <script src="https://unpkg.com/vue@2.6.0"></script>
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- <input v-model.lazy="msg"> lazy 表示触发事件后才会同步数据，而非输入数据 -->
+        <!-- <input v-model.number="msg"> number 表示输入的数据为数值类型Number -->
+        <!-- <input v-model.trim="msg"> trim 过滤首尾空白字符 -->
+        <div style="padding:20px; background: gainsboro;">输入框</div>
+        <input v-model="message" placeholder="edit me"></input>
+        <p>message is : {{ message }}</p>
+        <textarea v-model="textMessage" placeholder="please input something"></textarea>
+        <p>textMessage is : {{textMessage}}</p>
+        
+        <div style="padding:20px; background: gainsboro;">复选框</div>
+        <br>
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>Checked names: {{ checkedNames }}</span>
+        <!-- 绑定v-model为数组，则勾选中为加入数组，将value值加入，未设置value，则为null-->
+        <!-- 绑定v-model为字符串，则勾选中为true，未勾选为false, 默认value为false-->
+        <br>
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+
+        <br>
+
+        <div style="padding:20px;background: gainsboro; ">单选框</div>
+
+        <input type="radio" id="one" value="One" v-model="picked">
+        <label for="one">One</label>
+        <input type="radio" id="two" value="Two" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <span>Picked: {{ picked }}</span>
+
+        <div style="padding:20px; background: gainsboro;">Select单选</div>
+        
+        <select v-model="selected">
+            <option disabled value="">请选择</option>
+            <option value="A1">A</option>
+            <option value="B1">B</option>
+            <option value="C1">C</option>
+        </select>
+        <span>Selected: {{selected}}</span>
+
+
+        <div style="padding:20px; background: gainsboro;">Select多选(Ctrl+click)</div>
+        
+        <select v-model="multiSelected" multiple >
+            <option disabled value="">请选择</option>
+            <option value="A1">A</option>
+            <option value="B1">B</option>
+            <option value="C1">C</option>
+        </select>
+        <span>Selected: {{multiSelected}}</span>
+
+
+        
+        <div style="padding:20px; background: gainsboro;">Select动态v-for option</div>
+        
+        <select v-model="dynamicSelected">
+            <option disabled value="">请选择</option>
+            <option v-for="item in dynamicOptions"  :value="item.value">{{item.name}}</option>
+        </select>
+        <span>Selected: {{dynamicSelected}}</span>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    var v = new Vue({
+        el: "#app",
+        data() {
+            return {
+                message: "",
+                textMessage: "",
+                checkedNames: [],
+                checked: "",
+                picked: "",
+                selected: "",
+                multiSelected: [],
+                dynamicSelected: "",
+                dynamicOptions: [
+                    {name: "张安", value: "zhangan"},
+                    {name: "李四", value: "lisi"},
+                    {name: "王五", value: "wangwu"}
+                ]
+            }
+        },
+    });
+</script>
