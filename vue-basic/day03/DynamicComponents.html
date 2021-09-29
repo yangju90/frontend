@@ -22,7 +22,12 @@
         {
             name: "Home",
             component:{
-                template: '<div>Home Component</div>',
+                template: '<div @click="sampleClick">Home Component</div>',
+                methods: {
+                    sampleClick() {
+                        alert("Home Component")
+                    },
+                },
             }
         },
         {
